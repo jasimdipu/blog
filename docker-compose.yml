@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  db:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    volumes:
+      - /tmp/app/mysqld:/var/run/mysqld
+      - ./db:/var/lib/mysql
+    env_file: .env
+
+  backend:
+    build: .
+    container_name: blog
+    command: bash -c "python3 manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app/backend
+      - /tmp/app/mysqld:/run/mysqld
+    ports:
+      - "8000:8000"
+    env_file: .env
+    depends_on:
+      - db
+
+
+volumes:
+  databases-data:
