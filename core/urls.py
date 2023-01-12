@@ -14,7 +14,7 @@ urlpatterns = [
         "api/user_accounts/", include(("users.urls", "users"))
     ),
     re_path(
-        "api/blog", include(("blog.urls", "blog"))
+        "api/blog/", include(("blog.urls", "blog"))
     ),
     path("api/v1/schema/", SpectacularAPIView.as_view(api_version="v1"), name="schema"),
     path(

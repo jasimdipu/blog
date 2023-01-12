@@ -2,16 +2,20 @@ version: "3.7"
 
 services:
   db:
-    image: mysql:8
+    build:
+      context: .
+      dockerfile: ./database/mysql/Dockerfile
     ports:
       - "3306:3306"
     volumes:
-      - /tmp/app/mysqld:/var/run/mysqld
-      - ./db:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
     env_file: .env
 
   backend:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     container_name: blog
     command: bash -c "python3 manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
@@ -25,4 +29,4 @@ services:
 
 
 volumes:
-  databases-data:
+  mysql_data:
